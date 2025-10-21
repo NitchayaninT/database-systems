@@ -18,7 +18,7 @@ group by deptno, deptname; # so that each duplicate deptno, deptname will be tre
 # having (after grouping)
 # count only the records that have records equal or more than 4 (filter from grouping)
 # the result = only shows records that satisfy the having clause
-select  deptno, deptname, avg(Salary) as MeanSalary
+select  deptno, deptname, avg(Salary) as MeanSalary, count(*)
 from department d, employee e
 where e.workdept = d.deptno # when cross product + where condition (filter), there will be duplicates for department if there are more than 2 employees working in that dep
 group by deptno, deptname # the groupby and select attr should be the same, or select can be subset of groupby

@@ -1,15 +1,21 @@
 # SQL Basics
 ## Data Types
-varchar(size) = string
-int = int
-double = double
-decimal(size, deci_size)= decimal
+- **INTEGER/INT**
+- **DECIMAL(p,q)** : p-bit numbers with q bits right of decimal
+- **FLOAT(p)** : p-bit floating point numbers
+- **CHAR(n)** : fixed length character string, length n
+- **VARCHAR(n)** : variable length character string, max. Length n
+- **DATE** : describes a year, month, day
+- **TIME** : describes an hour, minute, second
+- **TIMESTAMP** : describes and data and time on that date
+- **YEAR/MONTH INTERVAL** : time interval
+- **DAY/TIME INTERVAL** : time interval
 ## Create Database
 `CREATE DATABASE db_name;`
 ## Create Table
 With foreign key and private key
 `create table moviestar(`
-	`starid varchar(5),`
+	`starid varchar(5) NOT NULL,`
     `name varchar(50),`
     `address varchar(255),`
     `gender varchar(1),`
@@ -20,6 +26,25 @@ With foreign key and private key
 add **one attribute "movieid"** as string into the "movie" table then set it as primary key
 `alter table movies`
 `add movieid varchar(5) primary key;`
+## Constraints
+used to limit the type of data that can go into a table
+they can be specified when a table is created or after the table is created (using ALTER TABLE statement)
+### UNIQUE
+Uniquely identifies each record in a database table
+provides a guarantee for uniqueness for a column or set of columns
+- Write UNIQUE after declaring an attribute
+- Write CONSTRAINT with UNIQUE
+	- `CONSTRAINT uc_personID UNIQUE (P_Id,LastName)`
+	- meaning, P_Id and LastName together are UNIQUE
+### PRIMARY KEY
+primary keys must contain unique values, and cannot contain NULL values
+- Write PRIMARY KEY after declaring an attribute
+- Write CONSTRAINT with PRIMARY KEY
+	- `CONSTRAINT pk_PersonID PRIMARY KEY (P_Id,LastName)`
+** when we declare foreign key, we cannot set only 1 of the attributes from the PK in the parent table, because we declared 2 PK in the parent table earlier
+### FOREIGN KEY
+FOREIGN KEY in one table **points to a PRIMARY KEY in another table**
+- 
 ## Where clause
 - **Conditions** may include arithmetic operators and comparisons
 - logical connectives (and,or,not)
