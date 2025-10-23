@@ -9,7 +9,7 @@ select firstname,lastname, salary
 from employee
 order by salary desc
 limit 5;
-
+	
 # IN operator : specify multiple values in WHERE clause
 select * from employee
 where lastname in('HENDERSON','KWAN');

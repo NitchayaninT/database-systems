@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "SQL1/SQL Basics.md",
+                "file": "SQL Queries.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "SQL Basics"
+              "title": "SQL Queries"
             }
           }
         ]
@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "cabed81ccd546faa",
@@ -172,10 +171,11 @@
   },
   "active": "1e072d201707bc32",
   "lastOpenFiles": [
+    "SQL Basics.md",
+    "SQL Queries.md",
     "SQL2/SQL3/DB_Lecture10_Data.sql",
     "SQL2/SQL3/DB_Lecture10.sql",
     "SQL2/SQL3",
-    "SQL2/DB_Lecrture09_2.sql",
-    "SQL1/SQL Basics.md"
+    "SQL2/DB_Lecrture09_2.sql"
   ]
 }
