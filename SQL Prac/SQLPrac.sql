@@ -2,16 +2,17 @@ CREATE database YugoNationalBank;
 USE YugoNationalBank;
 
 CREATE table Customers(
-	CustomerID int not null Auto_Increment PRIMARY KEY,
+	CustomerID int not null Auto_Increment,
     AccountNumber varchar(10) not null,
     AccountTypeID int not null,
     CustomerName varchar(60) not null,
-    Address varchar(100),
+    Address varchar(120),
     City varchar(50),
-    State char(2),
-    ZIPCode char(5),
+    State varchar(50),
+    ZIPCode varchar(12),
     Country varchar(30),
-    HomePhone varchar(14)
+    HomePhone varchar(14),
+    CONSTRAINT cus_pk PRIMARY KEY(CustomerID)
 );
 
 INSERT INTO Customers
@@ -57,8 +58,7 @@ VALUES(0,'76-5475-43', 2, 'Joseph Patrick Honey', '3832 Great River Rd', 'Vienna
 INSERT INTO Customers
 VALUES(0,'27-3457-49', 3, 'Robert Daniel Luner', '802 Lilas Ave', 'Baltimore', 'MD', '21208', 'USA', '(410) 321-6730');
 
-# SELECT * FROM Customers;
-
+SELECT * FROM Customers;
 
 CREATE TABLE Locations
 (
@@ -261,4 +261,47 @@ VALUES(0, 6, 1, 5, '2007-1-24', 200.00);
 
 INSERT INTO Withdrawals 
 VALUES(0, 1, 3, 4, '2007-2-6', 60);
+
+# 5. Set foreign key for customers
+# Property : parent attributes must be NOT NULL and UNIQUE
+# in order to do that, the attributes City,State,ZIPCode must be UNIQUE
+# we cannot do that with Address because some of them are null
+# the data in foriegn key CAN be NULL
+# the data in foriegn key MUST match data from reference column in parent table
+
+alter table Customers
+add constraint fk_accountTypes FOREIGN KEY (AccountTypeID) REFERENCES AccountTypes(AccountTypeID);
+/*
+alter table Locations
+modify City varchar(50) NOT NULL,
+add constraint uq_location UNIQUE(City,State,ZIPCode);
+
+alter table Customers
+add constraint uq_location FOREIGN KEY(City,State,ZIPCode) REFERENCES Locations(City,State,ZIPCode);
+# BUT this gets error 1452 : Attempting to insert City,State,ZIPCode that doesn’t match any City,State,ZIPCode in the parent table triggers MySQL error 1452:
+*/
+/*
+# So, we should add a foriegn key BY OURSELVES
+# locationID is already PRIMARY KEY, so no need to set UNIQUE. and its already NOTNULL
+alter table Customers
+add LocationID int ,
+add CONSTRAINT fk_location FOREIGN KEY(LocationID) REFERENCES Locations(LocationID); 
+
+# check mutual rows
+select * from Locations L join Customers c
+ON c.City = L.City
+AND c.State = L.State
+AND c.ZIPCode = L.ZIPCode;
+# only location ID 3 is mutual
+
+# update customer table so that the matching one (3) has LocationID. The rest doesnt have
+update Customers c
+join (select * from Locations) L
+ON c.City = L.City
+AND c.State = L.State
+AND c.ZIPCode = L.ZIPCode
+SET c.locationID = L.LocationID;
+*/
+select * from Customers;
+
 

@@ -59,6 +59,9 @@ Whenever we want to edit a table we have already created
 7. Rename the table
 `ALTER TABLE students`
 `RENAME TO learners;`
+8. add not null to the attribute
+`ALTER TABLE table_name`
+`MODIFY column_name data_type NOT NULL;`
 
 ## Insertion
 - **INSERT INTO** 
@@ -112,7 +115,7 @@ primary keys must contain unique values, and **cannot contain NULL values** (NOT
 ### FOREIGN KEY
 ---
 FOREIGN KEY in one table **points to a PRIMARY KEY in another table**
-It’s used to **link two tables together** and maintain **referential integrity** (meaning: relationships between data are valid and consistent)
+It can reference **any column or set of columns that has a UNIQUE constraint** in the parent table as well
 - Write CONSTRAINT with FOREIGN KEY
 - `CONSTRAINT fk_student_course FOREIGN KEY (course_id) REFERENCES course(course_id)`
 - Meaning, this table has course_id as a foreign key WITH reference to the attribute "course_id" in the course table
