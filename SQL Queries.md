@@ -96,6 +96,33 @@ The **`UNION`** operator combines **results from two (or more) SELECT queries** 
 `SELECT name FROM students_2024`
 `UNION`
 `SELECT name FROM students_2025;`
+
+- example (hard) : Find the name of the user who has rated the greatest number of movies. In case of a tie, return the lexicographically smaller user name. Find the movie name with the highest average rating in February 2020. In case of a tie, return the lexicographically smaller movie name.
+- - two rows, one column named `results`
+**SELECT t.result AS results**
+**FROM (**
+**SELECT u.name AS result**
+**FROM Movies AS m**
+**LEFT JOIN MovieRating AS r ON m.movie_id = r.movie_id**
+**LEFT JOIN Users AS u ON u.user_id = r.user_id**
+**GROUP BY u.user_id, u.name**
+**ORDER BY COUNT(r.movie_id) DESC, u.name**
+**LIMIT 1**
+**) AS t**
+
+**UNION ALL**
+
+**SELECT t2.result**
+**FROM (**
+**SELECT m.title AS result**
+**FROM Movies AS m**
+**LEFT JOIN MovieRating AS r ON m.movie_id = r.movie_id**
+**LEFT JOIN Users AS u ON u.user_id = r.user_id**
+**WHERE r.created_at >= '2020-02-01' AND r.created_at < '2020-03-01'**
+**GROUP BY m.movie_id, m.title**
+**ORDER BY AVG(r.rating) DESC, m.title**
+**LIMIT 1**
+**) AS t2;**
 ### INTERCEPT (MySQL = IN)
 ---
 (already in the IN section)
@@ -183,6 +210,14 @@ Cases when no GROUP BY is needed
 **we must use GROUP BY only when a SELECT mixes aggregated and non-aggregated columns.** Otherwise, aggregates alone don’t require GROUP BY.
 
 ## Cases
+**SELECT OrderID, Quantity,**  
+**CASE**  
+    **WHEN Quantity > 30 THEN "The quantity is greater than 30"**  
+    **WHEN Quantity = 30 THEN "The quantity is 30"**  
+    **ELSE "The quantity is under 30"**  
+**END**  
+**FROM OrderDetails;**
+
 Example : count the number of actors and the number of actresses from moviestar table
 - `select count(case when ms.gender='M' then ms.name end), count(case when ms.gender='F' then ms.name end)`
 `from moviestar ms;`
@@ -206,6 +241,17 @@ Example : count number of actors and actresses for each movie
 `FROM movies AS mv`
 `LEFT JOIN moviestar AS ms ON ms.movieid = mv.movieid`
 `GROUP BY mv.title;` 
+
+Example (hard) : swap the seat id of every two consecutive students. If the number of students is odd, the id of the last student is not swapped.
+`select`
+	`case`
+	`when id % 2 = 0 then id-1`
+	`when id = (SELECT MAX(id) FROM Seat) and id % 2 = 1 THEN id`
+	`else id+1`
+	`end as id,`
+	`student`
+`from Seat`
+`order by id;`
 ## Subqueries
 ### Correlated Subqueries
 ### Scalar Subqueries
@@ -240,4 +286,10 @@ Example : count number of actors and actresses for each movie
 `from Employee as manager JOIN Employee as normal ON normal.managerId = manager.id`
 `group by manager.name, manager.id`
 `having count(manager.id)>=5;`
-
+- Find the IDs of the employees whose salary is **strictly less than $30000 and whose manager left the company.**
+	- employee that left. employee_id is null
+	- so, select each employee's manager and find if their manager is IN any employee_id or not
+`select employee_id`
+`from Employees`
+`where salary < 30000 and manager_id not in (select employee_id from Employees)`
+`order by employee_id asc;`
