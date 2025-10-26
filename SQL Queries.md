@@ -209,3 +209,35 @@ Example : count number of actors and actresses for each movie
 ## Subqueries
 ### Correlated Subqueries
 ### Scalar Subqueries
+
+## Others
+- `LENGTH(attr)` = get the size of a string
+- visited **without making any transactions** and the number of times they made these types of visits
+	- `select V.customer_id, COUNT(V.visit_id) as count_no_trans`
+`from Visits as V LEFT JOIN Transactions as T ON V.visit_id = T.visit_id`
+`where T.visit_id is NULL`
+`GROUP BY V.customer_id;`
+- Subtract a time interval from a date or datetime.
+	- `DATE_SUB(date_value, INTERVAL day/time)`
+	- example : `SELECT DATE_SUB('2025-10-25', INTERVAL 7 DAY);`
+- Average time of process per machine
+	- `select A.machine_id, ROUND(avg(B.timestamp-A.timestamp),3) AS processing_time`
+		`from Activity as A, Activity as B`
+		`WHERE A.activity_type='start' AND B.activity_type='end' and A.machine_id = B.machine_id`
+		`group by A.machine_id;`
+- To round up decimals
+	- `ROUND(value,no_decimals)`
+- number of times each student attended each exam (CROSS JOIN, then left outer join)
+`select distinct Std.student_id, Std.student_name, Sub.subject_name, count(e.subject_name) as attended_exams`
+`from Students as Std`
+`CROSS JOIN Subjects as Sub`
+`LEFT OUTER JOIN Examinations e ON e.subject_name = Sub.subject_name`
+`and e.student_id = Std.student_id`
+`group by std.student_id, std.student_name, Sub.subject_name`
+`order by Std.student_id asc;`
+- find managers with at least five employees.
+`select manager.name`
+`from Employee as manager JOIN Employee as normal ON normal.managerId = manager.id`
+`group by manager.name, manager.id`
+`having count(manager.id)>=5;`
+
